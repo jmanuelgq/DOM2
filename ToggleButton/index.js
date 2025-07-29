@@ -1,55 +1,59 @@
-//  <button id="toggle-button">
-//       <span id="hamburger-icon">🍔</span>
-//       <span class="hidden" id="close-icon">❌</span>
-//     </button>
+// <button id="toggle-button">
+//   <span id="hamburger-icon">🍔</span>
+//   <span id="close-icon" class="hidden">❌</span>
+// </button>
+// <nav id="menu" class="hidden">
+//   <a href="">Inicio</a>
+//   <a href="">Productos</a>
+//   <a href="">Contacto</a>
+// </nav>
 
-//     <nav id="menu" class="hidden">
-//       <a href="#">Inicio</a>
-//       <a href="#">Productos</a>
-//       <a href="#">Contacto</a>
-//     </nav>
+class ToggleMenu {
+  constructor(containerId) {
+    this.container = document.querySelector(containerId);
+    this.menuState = false;
+    this.init();
+  }
 
-// CREACION DE NODOS
-const toggleButton = document.createElement("button");
-const hamburgerIcon = document.createElement("span");
-const closeIcon = document.createElement("span");
+  toggleMenu() {
+    this.menuState = !this.menuState;
+    this.menu.classList.toggle("hidden");
+    this.menu.classList.toggle("nav");
+    // this.hamburgerIcon.classList.toggle("hidden");
+    // this.closeIcon.classList.toggle("hidden");
+    this.toggleButton.textContent = this.menuState ? "❌" : "🍔";
+  }
 
-const menu = document.createElement("nav");
-const menuLinks = ["Inicio", "Productos", "Contacto"];
-menuLinks.forEach((link) => {
-  const anchor = document.createElement("a");
-  anchor.href = "#";
-  anchor.textContent = link;
-  menu.append(anchor);
-});
+  init() {
+    this.toggleButton = document.createElement("button");
+    this.toggleButton.textContent = "🍔";
+    // this.hamburgerIcon = document.createElement("span");
+    // this.closeIcon = document.createElement("span");
 
-// Agregando clases y contenido
-hamburgerIcon.textContent = "🍔";
-closeIcon.textContent = "❌";
+    this.menu = document.createElement("nav");
+    const menuLinks = ["Inicio", "Productos", "Contacto"];
+    menuLinks.forEach((link) => {
+      const anchor = document.createElement("a");
+      anchor.href = "#";
+      anchor.textContent = link;
+      this.menu.append(anchor);
+    });
 
-closeIcon.classList.add("hidden");
-menu.classList.add("hidden");
+    // this.hamburgerIcon.textContent = "🍔";
+    // this.closeIcon.textContent = "❌";
 
-toggleButton.append(hamburgerIcon);
-toggleButton.append(closeIcon);
+    // this.closeIcon.classList.add("hidden");
+    this.menu.classList.add("hidden");
 
-// Agregando funcionalidad
-toggleButton.addEventListener("click", function (_event) {
-  menu.classList.toggle("hidden");
-  menu.classList.toggle("nav");
-  hamburgerIcon.classList.toggle("hidden");
-  closeIcon.classList.toggle("hidden");
-});
+    // this.toggleButton.append(this.hamburgerIcon);
+    // this.toggleButton.append(this.closeIcon);
 
-document.addEventListener("click", function (event) {
-  if (toggleButton.contains(event.target)) return;
-  if (menu.contains(event.target)) return;
+    // this.toggleButton.addEventListener("click", this.toggleMenu.bind(this));
+    this.toggleButton.addEventListener("click", () => this.toggleMenu());
 
-  menu.classList.add("hidden");
-  menu.classList.remove("nav");
-  hamburgerIcon.classList.remove("hidden");
-  closeIcon.classList.add("hidden");
-});
+    this.container.append(this.toggleButton);
+    this.container.append(this.menu);
+  }
+}
 
-document.body.append(toggleButton);
-document.body.append(menu);
+new ToggleMenu("#menu-container");
