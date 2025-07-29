@@ -5,67 +5,66 @@
 //   <button id="reset">Resetear</button>
 // </div>
 
-function createCounter(containerId) {
-  const container = document.querySelector(containerId);
-  container.classList.add("counter-container");
-
-  let value = 0;
-
-  const counter = document.createElement("p");
-  const incrementButton = document.createElement("button");
-  const decrementButton = document.createElement("button");
-  const resetButton = document.createElement("button");
-
-  counter.textContent = value;
-  incrementButton.textContent = "Incrementar";
-  decrementButton.textContent = "Decrementar";
-  resetButton.textContent = "Resetear";
-
-  function incrementHandler() {
-    value += 1;
-    updateValue();
+class Counter {
+  constructor(containerId) {
+    this.container = document.querySelector(containerId);
+    this.value = 0;
+    this.init();
   }
 
-  function decrementHandler() {
-    value -= 1;
-    updateValue();
+  incrementHandler() {
+    // this.counter.innerText = parseInt(this.counter.innerText) + 1;
+    this.value += 1;
+    this.updateValue();
   }
 
-  function resetHandler() {
-    value = 0;
-    updateValue();
+  decrementHandler() {
+    // this.counter.innerText = parseInt(this.counter.innerText) - 1;
+    this.value -= 1;
+    this.updateValue();
   }
 
-  function updateValue() {
-    counter.textContent = value;
+  resetHandler() {
+    // this.counter.innerText = "0";
+    this.value = 0;
+    this.updateValue();
   }
 
-  container.addEventListener("click", function (event) {
-    if (incrementButton.contains(event.target)) {
-      incrementHandler();
-    } else if (decrementButton.contains(event.target)) {
-      decrementHandler();
-    } else if (resetButton.contains(event.target)) {
-      resetHandler();
-    }
-  });
+  updateValue() {
+    this.counter.textContent = this.value;
+  }
 
-  container.append(counter);
-  container.append(incrementButton);
-  container.append(decrementButton);
-  container.append(resetButton);
+  init() {
+    this.container.classList.add("counter-container");
 
-  return {
-    increment: function () {
-      incrementHandler.click();
-    },
-    decrement: function () {
-      decrementHandler.click();
-    },
-    reset: function () {
-      resetButton.click();
-    },
-  };
+    this.counter = document.createElement("p");
+    this.incrementButton = document.createElement("button");
+    this.decrementButton = document.createElement("button");
+    this.resetButton = document.createElement("button");
+
+    this.counter.textContent = this.value;
+    this.incrementButton.textContent = "Incrementar";
+    this.decrementButton.textContent = "Decrementar";
+    this.resetButton.textContent = "Resetear";
+
+    this.container.addEventListener(
+      "click",
+      function (event) {
+        if (this.incrementButton.contains(event.target)) {
+          this.incrementHandler();
+        } else if (this.decrementButton.contains(event.target)) {
+          this.decrementHandler();
+        } else if (this.resetButton.contains(event.target)) {
+          this.resetHandler();
+        }
+      }.bind(this)
+    );
+
+    this.container.append(this.counter);
+    this.container.append(this.incrementButton);
+    this.container.append(this.decrementButton);
+    this.container.append(this.resetButton);
+  }
 }
 
-const counter = createCounter("#counter-container");
+new Counter("#counter-container");
